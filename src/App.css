@@ -8,8 +8,8 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color: #515151;
+  height: 50px;
   padding: 20px;
   color: white;
 }
@@ -18,7 +18,10 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Overrriding boostrap styles */
+.container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  margin-left: 30px !important;
+  margin-right: 30px !important;
 }

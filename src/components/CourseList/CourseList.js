@@ -2,6 +2,10 @@ import React from 'react';
 import api from '../../api/api.js';
 import Select from 'react-select';
 import Course from '../Course/Course.js'
+import { Button } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 // Import CSS from CourseList/styles.css
 import './styles.css';
@@ -11,6 +15,9 @@ class CourseList extends React.Component {
   constructor(props) {
     super(props);
 
+    // termResponse : Getting all possible terms (1175, 1179)
+    // subjectResponse : Getting all possible subjects (CS, MATH)
+    // courseResponse : Getting all data for a specific subject (CS)
     this.state = {
       termResponse: null,
       termValue: {
@@ -25,7 +32,7 @@ class CourseList extends React.Component {
       courseResponse: null
     };
     
-    // So this.state is defined in these functions
+    // -> this.state is defined in these functions
     this.setTermValue = this.setTermValue.bind(this);
     this.setSubjectValue = this.setSubjectValue.bind(this);
   }
@@ -48,11 +55,9 @@ class CourseList extends React.Component {
     });
   }
   
-  // Private (Within Component only)
+  // Private
   getCourseData(termValue, subjectValue) {
     api.getData(this.props.courseURL + termValue + "/" + subjectValue + "/schedule.json?key=" + this.props.apiKey).then((response) => {
-      // console.log("response " + JSON.stringify(response));
-      console.log("success");
       this.setState({
         courseResponse: response
       });
@@ -61,7 +66,6 @@ class CourseList extends React.Component {
   }
   
   setTermValue(value) {
-    console.log("term changed " + JSON.stringify(value));
     this.setState((prevState) => {
       return {termValue: value}
     });
@@ -95,45 +99,54 @@ class CourseList extends React.Component {
   
   parseSubjectData() {
     const subjectData = this.state.subjectResponse.data;
-    // console.log("subjectData " + JSON.stringify(subjectData));
     var subjectArray = subjectData.map(function(obj, index) {
       return { "value": obj.subject, "label": obj.subject };
     });
     return subjectArray;
-    // console.log(JSON.stringify(subjectArray));
   }
   
   render() {
+    // JS for rendering
     if ((!this.state.termResponse) || (!this.state.subjectResponse)) {
       return (
         <p>Loading...</p>
       )
     }
     
+    // Weird thing happening with null courseResponse
     const courseResponse = this.state.courseResponse;
-    console.log("courseResponse " + courseResponse);
 
     // Return here
     return (
-      <div>
-        <h2>CourseList component</h2>
-        <Select
-          name="form-field-name"
-          value={this.state.termValue}
-          options={this.parseTermData()}
-          onChange={this.setTermValue}
-        />
-        
-        <Select
-          name="form-field-name"
-          value={this.state.subjectValue}
-          options={this.parseSubjectData()}
-          onChange={this.setSubjectValue}
-        />
-        
-        <Course data={courseResponse} />
-
-      </div>
+      <Grid>
+        <Row>
+          <Col xs={4} md={4} lg={4}>
+            <div className="dashboard-sidebar">
+              <h3 className="term-header">Term</h3>
+              <Select
+                name="form-field-name"
+                value={this.state.termValue}
+                options={this.parseTermData()}
+                onChange={this.setTermValue}
+              />
+              <h3 className="subject-header">Subject</h3>
+              <Select
+                name="form-field-name"
+                value={this.state.subjectValue}
+                options={this.parseSubjectData()}
+                onChange={this.setSubjectValue}
+              />
+            </div>
+            
+            {/* Have filters to sort by online/instructors/full or not full/ etc */}
+          </Col>
+          <Col xs={8} md={8} lg={8}>
+            <div className="dashboard-results">
+              <Course courseData={courseResponse} />
+            </div>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

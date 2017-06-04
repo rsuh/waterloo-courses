@@ -14,6 +14,9 @@ import './App.css';
 // Import logos/images
 import logo from './logo.svg';
 
+// Font Ubuntu
+{/* <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet"> */}
+
 // Client-side apps can't hide API-keys
 var apiKey = '1f20a62a6fd01d5bdbe088a3fa8e6510';
 // TODO: Make a config.json file, gitignore it, and include the file here. https://gist.github.com/derzorngottes/3b57edc1f996dddcab25
@@ -30,10 +33,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        </div>
-        <hr />
+        {/* Latest compiled and minified CSS */}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css" />
+        
+        <div className="App-header"></div>
+        {/* <Button bsStyle="info">Right</Button> */}
         <CourseList courseURL={courseURL} termURL={termURL} subjectsURL={subjectsURL} apiKey={apiKey} />
       </div>
     );
