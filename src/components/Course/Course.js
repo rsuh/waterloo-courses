@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'underscore'
 
 // Import CSS from Course/styles.css
 import './styles.css';
@@ -23,25 +24,66 @@ class Course extends React.Component {
     courseData.sort((a, b) => {
       return a.catalog_number - b.catalog_number;
     });
-    
-    courseData = this.props.courseData.data.map((obj, index) => {
-      // Sort classses by catalog_number, take out grad/ courses catalog_num < 100
+
+    var groupedCourses = _.groupBy(courseData, 'catalog_number');
+
+    var a = Object.keys(groupedCourses).map(function(key, index) {
+
+      // Array of same catalog_number courses
+      var courseArray = groupedCourses[key]
+      console.log(courseArray[0].subject);
+      
+      var q = courseArray.map((obj, index) => {
+        // Return for q
+        return (
+          <tr key={index}>
+            <td>{obj.section}</td>
+            <td>{obj.class_number}</td>
+            <td>{obj.campus}</td>
+            <td>{obj.enrollment_total}/{obj.enrollment_capacity}</td>
+            <td>{obj.subject} {obj.catalog_number} - {obj.title}</td>
+            {/* , {obj.subject} {obj.catalog_number}, {obj.title}, {obj.campus} {obj.enrollment_total}/{obj.enrollment_capacity} */}
+          </tr>
+        );
+      });
+      
+      // return for outer map
       return (
-        <tr key={index}>
-          <td>{obj.subject} {obj.catalog_number} - {obj.title}</td>
-          <td>{obj.section}</td>
-          <td>{obj.class_number}</td>
-          <td>{obj.campus}</td>
-          <td>{obj.enrollment_total}/{obj.enrollment_capacity}</td>
-          {/* , {obj.subject} {obj.catalog_number}, {obj.title}, {obj.campus} {obj.enrollment_total}/{obj.enrollment_capacity} */}
-        </tr>
+        <div className="courseCards" key={index}>
+          <h3>{courseArray[0].subject} {key} - {courseArray[0].title}</h3>
+          <table>
+            <thead>
+              <tr>
+                <td>Section</td>
+                <td>Class</td>
+                <td>Campus</td>
+                <td>Enrolled</td>
+                <td>Time</td>
+                <td>Location</td>
+                <td>Instructor(s)</td>
+              </tr>
+            </thead>
+            <tbody>
+              {q}
+            </tbody>
+          </table>
+        </div>
       );
     });
-    return courseData;
+    // console.log("a is " + JSON.stringify(a));
+    return a;
+    
+    // groupedCourses.forEach((obj, index) => {
+    // courseData = _.each((groupedCourses, (value, key, list)) => {
+      // Sort classses by catalog_number, take out grad/ courses catalog_num < 100
+      
+    // });
+    // return a;
+    // return courseData;
+    // console.log("groupedCourses " + JSON.stringify(groupedCourses));
+    // return groupedCourses;
   }
-  
-  
-  
+
   render() {
     // If null courseData, return null p tag
     if (!this.props.courseData) return (<p></p>);
@@ -51,24 +93,7 @@ class Course extends React.Component {
     return (
       <div>
         <h2>Course</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Course</th>
-              <th>Section</th>
-              <th>Class</th>
-              <th>Campus</th>
-              <th>Enrolled</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-            
-          </tbody>
-          {this.formatCourseData()}
-        </table>
-        
+        {this.formatCourseData()}
       </div>
     );
   }
