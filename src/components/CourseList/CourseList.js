@@ -118,7 +118,7 @@ class CourseList extends React.Component {
 
     // Return here
     return (
-      <Grid>
+      <Grid className="newContainer">
         <Row>
           <Col xs={4} md={4} lg={4}>
             <div className="dashboard-sidebar">

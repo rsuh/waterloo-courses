@@ -18,22 +18,27 @@ class Course extends React.Component {
   }
   
   // Private
-  formatCourseData() {
+  sortCourseData() {
     var courseData = this.props.courseData.data;
-    
+
     courseData.sort((a, b) => {
       return a.catalog_number - b.catalog_number;
     });
 
-    var groupedCourses = _.groupBy(courseData, 'catalog_number');
+    return courseData;
+  }
+  
+  formatCourseData() {
+    var sortedCourses = this.sortCourseData();
+    var groupedCourses = _.groupBy(sortedCourses, 'catalog_number');
 
-    var a = Object.keys(groupedCourses).map(function(key, index) {
+    groupedCourses = Object.keys(groupedCourses).map(function(key, index) {
 
       // Array of same catalog_number courses
       var courseArray = groupedCourses[key]
-      console.log(courseArray[0].subject);
+      // console.log(courseArray[0].subject);
       
-      var q = courseArray.map((obj, index) => {
+      var specificCourseArray = courseArray.map((obj, index) => {
         // Return for q
         return (
           <tr key={index}>
@@ -41,7 +46,7 @@ class Course extends React.Component {
             <td>{obj.class_number}</td>
             <td>{obj.campus}</td>
             <td>{obj.enrollment_total}/{obj.enrollment_capacity}</td>
-            <td>{obj.subject} {obj.catalog_number} - {obj.title}</td>
+            {/* <td>{obj.subject} {obj.catalog_number} - {obj.title}</td> */}
             {/* , {obj.subject} {obj.catalog_number}, {obj.title}, {obj.campus} {obj.enrollment_total}/{obj.enrollment_capacity} */}
           </tr>
         );
@@ -50,38 +55,31 @@ class Course extends React.Component {
       // return for outer map
       return (
         <div className="courseCards" key={index}>
-          <h3>{courseArray[0].subject} {key} - {courseArray[0].title}</h3>
-          <table>
+          <div className="courseBanner">
+            <h3 className="courseSubject">{courseArray[0].subject} {key}</h3> 
+            <h3 className="courseTitle">{courseArray[0].title}</h3>
+          </div>
+          <table className="courseTable">
             <thead>
-              <tr>
+              <tr className="courseTableHeadRow">
                 <td>Section</td>
                 <td>Class</td>
                 <td>Campus</td>
                 <td>Enrolled</td>
-                <td>Time</td>
+                {/* <td>Time</td>
                 <td>Location</td>
-                <td>Instructor(s)</td>
+                <td>Instructor(s)</td> */}
               </tr>
             </thead>
             <tbody>
-              {q}
+              {specificCourseArray}
             </tbody>
           </table>
         </div>
       );
     });
-    // console.log("a is " + JSON.stringify(a));
-    return a;
     
-    // groupedCourses.forEach((obj, index) => {
-    // courseData = _.each((groupedCourses, (value, key, list)) => {
-      // Sort classses by catalog_number, take out grad/ courses catalog_num < 100
-      
-    // });
-    // return a;
-    // return courseData;
-    // console.log("groupedCourses " + JSON.stringify(groupedCourses));
-    // return groupedCourses;
+    return groupedCourses;
   }
 
   render() {
@@ -92,7 +90,7 @@ class Course extends React.Component {
     // Tutorials are going to be in one block, lectures in another block.
     return (
       <div>
-        <h2>Course</h2>
+        <h3>Course</h3>
         {this.formatCourseData()}
       </div>
     );

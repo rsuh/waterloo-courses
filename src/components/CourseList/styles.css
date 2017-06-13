@@ -5,3 +5,8 @@
 .subject-header {
   text-align: left;
 }
+
+.newContainer {
+  /* All hacky fixes for react-bootstrap */
+  width: 96% !important;
+}

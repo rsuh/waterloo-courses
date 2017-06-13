@@ -1,5 +1,61 @@
+/* Table and table row */
+table, tr {
+  border: 1px solid #979797;
+  width: 100%;
+}
+
+/* Cells */
+td, th {
+  text-align: left;
+  padding: 10px !important;
+}
+
+/*tbody td {
+  border: none;
+  border-top: solid 1px #957030;
+}
+
+tbody tr:last-child td:first-child {
+  border-radius: 0 0 0 10px;
+}
+
+tbody tr:last-child td:last-child {
+  border-radius: 0 0 10px 0;
+}*/
+
+/* General course cards */
 .courseCards {
-  height: 500px;
-  width: 800px;
+  width: auto;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+/* Card banner */
+.courseBanner {
+  overflow: auto; /* Shows background color */
+  background-color: #258AF8;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.courseSubject {
+  color: white;
+  margin-left: 10px;
+  margin-top: 10px !important;
+  float: left;
+  display: inline-block;
+}
+
+.courseTitle {
+  color: white;
+  margin-right: 10px;
+  margin-top: 10px !important;
+  float: right;
+  display: inline-block;
+}
+
+/* Table */
+.courseTableHeadRow {
   background-color: #A7B3C2;
+  font-size: 20px;
 }
