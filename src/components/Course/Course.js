@@ -29,23 +29,48 @@ class Course extends React.Component {
   }
   
   formatCourseData() {
+    // Maybe have something that filters out useless courses, JSON?
+    
     var sortedCourses = this.sortCourseData();
     var groupedCourses = _.groupBy(sortedCourses, 'catalog_number');
 
     groupedCourses = Object.keys(groupedCourses).map(function(key, index) {
-
-      // Array of same catalog_number courses
-      var courseArray = groupedCourses[key]
-      // console.log(courseArray[0].subject);
+      // Array of same catalog_number courses, sorted by LEC, LABS, TST
+      var courseArray = groupedCourses[key].sort((a, b) => {
+        var sectionNumA = a.section.substr(a.section.length - 3);
+        var sectionNumB = b.section.substr(b.section.length - 3);
+        
+        return sectionNumA - sectionNumB;
+      });
       
       var specificCourseArray = courseArray.map((obj, index) => {
+        // Get date and instructors here
+        var dates = obj.classes.map((obj, index) => {
+          // console.log(obj);
+          return (
+            <p key={index}>{obj.date.start_time} to {obj.date.end_time}</p>
+          );
+        });
+        
+        var instructorList = obj.classes.map((obj, index) => { //
+          var instructors = obj.instructors.map((obj, index) => { // 
+            return (
+              <p key={index}>{obj}</p>
+            );
+          });
+          
+          return instructors;
+        });
+        
         // Return for q
         return (
           <tr key={index}>
-            <td>{obj.section}</td>
-            <td>{obj.class_number}</td>
-            <td>{obj.campus}</td>
-            <td>{obj.enrollment_total}/{obj.enrollment_capacity}</td>
+            <td className="section">{obj.section}</td>
+            <td className="class">{obj.class_number}</td>
+            <td className="campus">{obj.campus}</td>
+            <td className="enrolled">{obj.enrollment_total}/{obj.enrollment_capacity}</td>
+            <td className="dates">{dates}</td>
+            <td className="instructors">{instructorList}</td>
             {/* <td>{obj.subject} {obj.catalog_number} - {obj.title}</td> */}
             {/* , {obj.subject} {obj.catalog_number}, {obj.title}, {obj.campus} {obj.enrollment_total}/{obj.enrollment_capacity} */}
           </tr>
@@ -62,10 +87,10 @@ class Course extends React.Component {
           <table className="courseTable">
             <thead>
               <tr className="courseTableHeadRow">
-                <td>Section</td>
-                <td>Class</td>
-                <td>Campus</td>
-                <td>Enrolled</td>
+                <td className="section">Section</td>
+                <td className="class">Class</td>
+                <td className="campus">Campus</td>
+                <td className="enrolled">Enrolled</td>
                 {/* <td>Time</td>
                 <td>Location</td>
                 <td>Instructor(s)</td> */}

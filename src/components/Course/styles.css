@@ -1,6 +1,10 @@
 /* Table and table row */
+table {
+  box-shadow: -1px 1px 5px #888888;
+}
+
 table, tr {
-  border: 1px solid #979797;
+  /*background-color: lightBlue;*/
   width: 100%;
 }
 
@@ -8,32 +12,60 @@ table, tr {
 td, th {
   text-align: left;
   padding: 10px !important;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
 
-/*tbody td {
-  border: none;
-  border-top: solid 1px #957030;
+tbody td {
+  border-top: 1px solid black;
 }
 
+/* Hacky way to set border radius */
 tbody tr:last-child td:first-child {
-  border-radius: 0 0 0 10px;
+  border-bottom-left-radius: 10px;
 }
 
 tbody tr:last-child td:last-child {
-  border-radius: 0 0 10px 0;
-}*/
+  border-bottom-right-radius: 10px;
+}
+
+/* https://stackoverflow.com/questions/3313456/css-borders-between-table-columns-only */
+table td:first-child {
+  border-left: none;
+}
+
+table td:last-child {
+  border-right: none;
+}
 
 /* General course cards */
 .courseCards {
   width: auto;
-  background-color: white;
   margin-bottom: 10px;
+}
+
+.section {
+  width: 4em;
+}
+
+.class {
+  width: 3em;
+}
+
+.campus {
+  width: 5em;
+}
+
+.enrolled {
+  /*width: 5em;*/
 }
 
 /* Card banner */
 .courseBanner {
   overflow: auto; /* Shows background color */
   background-color: #258AF8;
+  color: white;
+  box-shadow: -1px 1px 5px #888888;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -56,6 +88,7 @@ tbody tr:last-child td:last-child {
 
 /* Table */
 .courseTableHeadRow {
+  color: white;
   background-color: #A7B3C2;
   font-size: 20px;
 }

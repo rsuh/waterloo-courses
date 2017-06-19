@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: avenir;
 }
 
 .App-logo {
@@ -11,7 +12,7 @@
   background-color: #515151;
   height: 50px;
   padding: 20px;
-  color: white;
+  /*color: white;*/
 }
 
 .App-intro {
@@ -22,4 +23,10 @@
 .container {
   padding-left: 0px !important;
   padding-right: 0px !important;
+}
+
+/* Fonts */
+@font-face {
+  font-family: avenir;
+  src: url(../fonts/Avenir.ttc);
 }
