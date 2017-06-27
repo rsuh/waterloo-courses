@@ -44,22 +44,33 @@ class Course extends React.Component {
       });
       
       var specificCourseArray = courseArray.map((obj, index) => {
-        // Get date and instructors here
         var dates = obj.classes.map((obj, index) => {
-          // console.log(obj);
           return (
-            <p key={index}>{obj.date.start_time} to {obj.date.end_time}</p>
+            <div key={index}>
+              {obj.date.start_time} to {obj.date.end_time} {obj.date.weekdays}
+            </div>
           );
         });
         
         var instructorList = obj.classes.map((obj, index) => { //
           var instructors = obj.instructors.map((obj, index) => { // 
             return (
-              <p key={index}>{obj}</p>
+              <div>
+                {obj}
+              </div>
             );
           });
           
           return instructors;
+        });
+        
+        var location = obj.classes.map((obj, index) => {
+          console.log(obj);
+          return (
+            <div key={index}>
+              {obj.location.building} {obj.location.room}
+            </div>
+          );
         });
         
         // Return for q
@@ -70,9 +81,8 @@ class Course extends React.Component {
             <td className="campus">{obj.campus}</td>
             <td className="enrolled">{obj.enrollment_total}/{obj.enrollment_capacity}</td>
             <td className="dates">{dates}</td>
+            <td className="location">{location}</td>
             <td className="instructors">{instructorList}</td>
-            {/* <td>{obj.subject} {obj.catalog_number} - {obj.title}</td> */}
-            {/* , {obj.subject} {obj.catalog_number}, {obj.title}, {obj.campus} {obj.enrollment_total}/{obj.enrollment_capacity} */}
           </tr>
         );
       });
@@ -91,9 +101,9 @@ class Course extends React.Component {
                 <td className="class">Class</td>
                 <td className="campus">Campus</td>
                 <td className="enrolled">Enrolled</td>
-                {/* <td>Time</td>
-                <td>Location</td>
-                <td>Instructor(s)</td> */}
+                <td className="dates">Dates</td>
+                <td className="location">Location</td>
+                <td className="instructors">Instructor(s)</td>
               </tr>
             </thead>
             <tbody>
@@ -103,16 +113,14 @@ class Course extends React.Component {
         </div>
       );
     });
-    
+
     return groupedCourses;
   }
 
   render() {
     // If null courseData, return null p tag
     if (!this.props.courseData) return (<p></p>);
-    
-    console.warn(this.props.courseData.data[0]);
-    // Tutorials are going to be in one block, lectures in another block.
+
     return (
       <div>
         <h3>Course</h3>
