@@ -1,7 +1,7 @@
 import React from 'react';
-import api from '../../api/api.js';
+import api from '../../api/index';
 import Select from 'react-select';
-import Course from '../Course/Course.js'
+import Course from '../Course/index'
 import { Button } from 'react-bootstrap';
 import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
@@ -31,7 +31,7 @@ class CourseList extends React.Component {
       },
       courseResponse: null
     };
-    
+
     // -> this.state is defined in these functions
     this.setTermValue = this.setTermValue.bind(this);
     this.setSubjectValue = this.setSubjectValue.bind(this);
@@ -47,30 +47,32 @@ class CourseList extends React.Component {
         }
       });
     });
-    
+
     api.getData(this.props.subjectsURL + "?key=" + this.props.apiKey).then((response) => {
       this.setState({
         subjectResponse: response
       });
     });
   }
-  
+
   // Private
+  // Sets the courseResponse in general
   getCourseData(termValue, subjectValue) {
     api.getData(this.props.courseURL + termValue + "/" + subjectValue + "/schedule.json?key=" + this.props.apiKey).then((response) => {
       this.setState({
         courseResponse: response
       });
-    });    
-    console.log(this.state.courseResponse);
+    });
   }
-  
+
+  // Sets the term value from dropdown
   setTermValue(value) {
     this.setState((prevState) => {
       return {termValue: value}
     });
   }
-  
+
+  // Sets the subject value from dropdown
   setSubjectValue(subject) {
     // If value != null and term != null, make api call
     if (subject != null && this.state.termValue != null) {
@@ -78,7 +80,7 @@ class CourseList extends React.Component {
       console.log(this.state.termValue);
       // Takes a while so have a spinning animation?
       this.getCourseData(this.state.termValue.value, subject.value);
-      
+
       console.log("subjects changed " + JSON.stringify(subject));
       this.setState({
         subjectValue: subject
@@ -87,7 +89,8 @@ class CourseList extends React.Component {
       console.log("ERROR: Term and Subject must be set");
     }
   }
-  
+
+  // Parses term information
   parseTermData() {
     const termData = this.state.termResponse.data;
     return [
@@ -96,7 +99,8 @@ class CourseList extends React.Component {
       { value: termData.next_term, label: termData.next_term}
     ];
   }
-  
+
+  // Parses subject information
   parseSubjectData() {
     const subjectData = this.state.subjectResponse.data;
     var subjectArray = subjectData.map(function(obj, index) {
@@ -104,15 +108,15 @@ class CourseList extends React.Component {
     });
     return subjectArray;
   }
-  
+
+  // Render
   render() {
-    // JS for rendering
     if ((!this.state.termResponse) || (!this.state.subjectResponse)) {
       return (
         <p>Loading...</p>
       )
     }
-    
+
     // Weird thing happening with null courseResponse
     const courseResponse = this.state.courseResponse;
 
@@ -137,7 +141,7 @@ class CourseList extends React.Component {
                 onChange={this.setSubjectValue}
               />
             </div>
-            
+
             {/* Have filters to sort by online/instructors/full or not full/ etc */}
           </Col>
           <Col xs={8} md={8} lg={8}>
