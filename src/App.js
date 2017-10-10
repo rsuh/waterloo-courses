@@ -1,5 +1,4 @@
 import React from 'react';
-// import $ from 'jquery';
 
 // Import Consts
 import { API_KEY, COURSE_URL, TERM_URL, SUBJECTS_URL } from './constants/index'
@@ -18,9 +17,6 @@ import './App.css';
 // Import logos/images
 import logo from './logo.svg';
 
-// Font Ubuntu
-{/* <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet"> */}
-
 // Client-side apps can't hide API-keys
 // var apiKey = '1f20a62a6fd01d5bdbe088a3fa8e6510';
 // TODO: Make a config.json file, gitignore it, and include the file here. https://gist.github.com/derzorngottes/3b57edc1f996dddcab25
@@ -31,6 +27,13 @@ import logo from './logo.svg';
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {users: []}
+  }
+
+  componentDidMount() {
+    fetch('/users')
+      .then(res => res.json())
+      .then(users => this.setState({ users }));
   }
 
   render() {
@@ -41,11 +44,14 @@ class App extends React.Component {
 
         <div className="App-header"></div>
         {/* <Button bsStyle="info">Right</Button> */}
-        <CourseList
+        {/*<CourseList
           courseURL={COURSE_URL}
           termURL={TERM_URL}
           subjectsURL={SUBJECTS_URL}
-          apiKey={API_KEY} />
+        />*/}
+        {this.state.users.map(user =>
+          <div key={user.id}>{user.username}</div>
+        )}
       </div>
     );
   }

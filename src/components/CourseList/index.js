@@ -38,7 +38,7 @@ class CourseList extends React.Component {
   }
 
   componentDidMount() {
-    api.getData(this.props.termURL + "?key=" + this.props.apiKey).then((response) => {
+    api.getData(this.props.termURL).then((response) => {
       this.setState({
         termResponse: response,
         termValue: {
@@ -48,7 +48,7 @@ class CourseList extends React.Component {
       });
     });
 
-    api.getData(this.props.subjectsURL + "?key=" + this.props.apiKey).then((response) => {
+    api.getData(this.props.subjectsURL).then((response) => {
       this.setState({
         subjectResponse: response
       });
@@ -58,7 +58,7 @@ class CourseList extends React.Component {
   // Private
   // Sets the courseResponse in general
   getCourseData(termValue, subjectValue) {
-    api.getData(this.props.courseURL + termValue + "/" + subjectValue + "/schedule.json?key=" + this.props.apiKey).then((response) => {
+    api.getData(this.props.courseURL + termValue + '/' + subjectValue + '/schedule.json').then((response) => {
       this.setState({
         courseResponse: response
       });
@@ -68,7 +68,7 @@ class CourseList extends React.Component {
   // Sets the term value from dropdown
   setTermValue(value) {
     this.setState((prevState) => {
-      return {termValue: value}
+      return { termValue: value }
     });
   }
 
@@ -104,7 +104,7 @@ class CourseList extends React.Component {
   parseSubjectData() {
     const subjectData = this.state.subjectResponse.data;
     var subjectArray = subjectData.map(function(obj, index) {
-      return { "value": obj.subject, "label": obj.subject };
+      return { 'value': obj.subject, 'label': obj.subject };
     });
     return subjectArray;
   }
@@ -142,7 +142,7 @@ class CourseList extends React.Component {
               />
             </div>
 
-            {/* Have filters to sort by online/instructors/full or not full/ etc */}
+          {/* Have filters to sort by online/instructors/full or not full/ etc */}
           </Col>
           <Col xs={8} md={8} lg={8}>
             <div className="dashboard-results">

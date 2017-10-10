@@ -31,13 +31,11 @@ class Course extends React.Component {
 
   // REFACTOR THIS PLEASE
   formatCourseData() {
-    // Maybe have something that filters out useless courses, JSON?
+    // Maybe have something that filters out useless courses
     var sortedCourses = this.sortCourseData();
     var groupedCourses = _.groupBy(sortedCourses, 'catalog_number');
 
-
-
-    groupedCourses = Object.keys(groupedCourses).map(function(key, index) {
+    groupedCourses = Object.keys(groupedCourses).map((key, index) => {
       // Array of same catalog_number courses, sorted by LEC, LABS, TST
       var courseArray = groupedCourses[key].sort((a, b) => {
         var sectionNumA = a.section.substr(a.section.length - 3);
@@ -57,8 +55,8 @@ class Course extends React.Component {
         });
 
         // Return instructors
-        var instructorList = course.classes.map((course, index) => { //
-          var instructors = course.instructors.map((course, index) => { //
+        var instructorList = course.classes.map((course, index) => {
+          var instructors = course.instructors.map((course, index) => {
             return (
               <div>
                 {course}
@@ -89,7 +87,6 @@ class Course extends React.Component {
             <td className="dates">{dates}</td>
             <td className="location">{location}</td>
             <td className="instructors">{instructorList}</td>
-            {/* https://www.ratemyprofessors.com/search.jsp?queryoption=HEADER&queryBy=teacherName&schoolName=University+of+Waterloo&schoolID=1490&query=steve */}
           </tr>
         );
       });
