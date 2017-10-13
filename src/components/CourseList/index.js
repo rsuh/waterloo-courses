@@ -38,31 +38,48 @@ class CourseList extends React.Component {
   }
 
   componentDidMount() {
-    api.getData(this.props.termURL).then((response) => {
-      this.setState({
-        termResponse: response,
-        termValue: {
-          value: response.data.current_term,
-          label: response.data.current_term
-        }
+    // terms endpoint from express
+    fetch('/terms')
+      .then((response) => response.json())
+      .then(terms => {
+        this.setState({
+          termResponse: terms,
+          termValue: {
+            value: terms.data.current_term,
+            label: terms.data.current_term
+          }
+        })
       });
-    });
 
-    api.getData(this.props.subjectsURL).then((response) => {
-      this.setState({
-        subjectResponse: response
+    // subjects endpoint from express
+    fetch('/subjects')
+      .then((response) => response.json())
+      .then(subjects => {
+        this.setState({
+          subjectResponse: subjects
+        });
       });
-    });
   }
 
   // Private
   // Sets the courseResponse in general
   getCourseData(termValue, subjectValue) {
-    api.getData(this.props.courseURL + termValue + '/' + subjectValue + '/schedule.json').then((response) => {
-      this.setState({
-        courseResponse: response
-      });
-    });
+    const data = {
+      term: termValue,
+      subject: subjectValue,
+    }
+
+    fetch('/course', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(subjects => this.setState({
+      courseResponse: subjects
+    }));
   }
 
   // Sets the term value from dropdown
